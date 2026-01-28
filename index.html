@@ -278,6 +278,15 @@
             opacity: 1;
         }
 
+        /* 默认背景 - 初始显示 */
+        .portfolio-bg-default {
+            opacity: 1;
+        }
+        
+        .portfolio-bg-default.hidden {
+            opacity: 0;
+        }
+
         /* 内容容器 */
         .portfolio-content {
             position: relative;
@@ -459,6 +468,10 @@
 
             <!-- 第二部分：作品集展示 -->
             <section class="portfolio-section">
+                <!-- 默认背景图 -->
+                <div class="portfolio-bg portfolio-bg-default" id="portfolioBgDefault">
+                    <img src="./works/default_bg.JPG" alt="Default Background">
+                </div>
                 <!-- 全屏背景大图 -->
                 <div class="portfolio-bg" id="portfolioBg1">
                     <img src="./works/work_01_bg.JPG" alt="Work 1 Background">
@@ -841,6 +854,7 @@
         
         const workItems = document.querySelectorAll('.work-item');
         const portfolioHeader = document.getElementById('portfolioHeader');
+        const portfolioBgDefault = document.getElementById('portfolioBgDefault');
         const portfolioBgs = [
             document.getElementById('portfolioBg1'),
             document.getElementById('portfolioBg2'),
@@ -852,6 +866,9 @@
             item.addEventListener('mouseenter', () => {
                 // 隐藏标题
                 portfolioHeader.classList.add('hidden');
+                
+                // 隐藏默认背景
+                portfolioBgDefault.classList.add('hidden');
                 
                 // 隐藏其他作品项
                 workItems.forEach((otherItem, otherIndex) => {
@@ -881,6 +898,9 @@
                 
                 // 隐藏背景大图
                 portfolioBgs[index].classList.remove('active');
+                
+                // 恢复默认背景
+                portfolioBgDefault.classList.remove('hidden');
             });
         });
 
