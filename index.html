@@ -409,16 +409,16 @@
             <section class="portfolio-section">
                 <!-- 全屏背景大图 -->
                 <div class="portfolio-bg" id="portfolioBg1">
-                    <img src="./works/work_01_bg.jpg" alt="Work 1 Background">
+                    <img src="./works/work_01_bg.JPG" alt="Work 1 Background">
                 </div>
                 <div class="portfolio-bg" id="portfolioBg2">
-                    <img src="./works/work_02_bg.jpg" alt="Work 2 Background">
+                    <img src="./works/work_02_bg.JPG" alt="Work 2 Background">
                 </div>
                 <div class="portfolio-bg" id="portfolioBg3">
-                    <img src="./works/work_03_bg.jpg" alt="Work 3 Background">
+                    <img src="./works/work_03_bg.JPG" alt="Work 3 Background">
                 </div>
                 <div class="portfolio-bg" id="portfolioBg4">
-                    <img src="./works/work_04_bg.jpg" alt="Work 4 Background">
+                    <img src="./works/work_04_bg.JPG" alt="Work 4 Background">
                 </div>
 
                 <div class="portfolio-content">
@@ -436,7 +436,7 @@
                     <div class="works-grid">
                         <div class="work-item" data-index="1">
                             <div class="work-item-inner">
-                                <img src="./works/work_01.jpg" alt="Work 1">
+                                <img src="./works/work_01.JPG" alt="Work 1">
                             </div>
                             <div class="work-info">
                                 <div class="work-info-inner">
@@ -447,7 +447,7 @@
                         </div>
                         <div class="work-item" data-index="2">
                             <div class="work-item-inner">
-                                <img src="./works/work_02.jpg" alt="Work 2">
+                                <img src="./works/work_02.JPG" alt="Work 2">
                             </div>
                             <div class="work-info">
                                 <div class="work-info-inner">
@@ -458,7 +458,7 @@
                         </div>
                         <div class="work-item" data-index="3">
                             <div class="work-item-inner">
-                                <img src="./works/work_03.jpg" alt="Work 3">
+                                <img src="./works/work_03.JPG" alt="Work 3">
                             </div>
                             <div class="work-info">
                                 <div class="work-info-inner">
@@ -469,7 +469,7 @@
                         </div>
                         <div class="work-item" data-index="4">
                             <div class="work-item-inner">
-                                <img src="./works/work_04.jpg" alt="Work 4">
+                                <img src="./works/work_04.JPG" alt="Work 4">
                             </div>
                             <div class="work-info">
                                 <div class="work-info-inner">
@@ -702,18 +702,19 @@
             });
         }
         
-        // 更新视差位移 + 呼吸动画
+        // 更新视差位移（关闭呼吸动画测试）
         function updateParallax() {
-            if (!cachedLayers || cachedLayers.length === 0) {
-                cacheLayers();
-                return;
+            // 每次检查缓存是否完整
+            const allDoneLayers = document.querySelectorAll('.layer.animation-done');
+            if (!cachedLayers || cachedLayers.length < allDoneLayers.length) {
+                cachedLayers = allDoneLayers;
             }
             
-            breathTime += breathSpeed;
+            if (cachedLayers.length === 0) return;
             
             const layerCount = CONFIG.layers.count;
             cachedLayers.forEach((layer, i) => {
-                // 图层1不参与视差和呼吸
+                // 图层1不参与视差
                 if (i === 0) return;
                 
                 const depth = (i + 1) / layerCount;
@@ -721,31 +722,19 @@
                 const moveX = (currentMouseX - 0.5) * depth * 50;
                 const moveY = (currentMouseY - 0.5) * depth * 30;
                 
-                const breathPhase = breathTime + i * 0.3;
-                const breathY = Math.sin(breathPhase) * (3 + depth * 5);
-                const breathScale = 1 + Math.sin(breathPhase * 0.5) * 0.008 * depth;
-                
-                layer.style.transform = `translate(${moveX}px, ${moveY + breathY}px) scale(${breathScale})`;
+                layer.style.transform = `translate(${moveX}px, ${moveY}px)`;
             });
         }
         
-        // 动画循环 - 只在第一页运行
+        // 动画循环 - 暂时关闭测试频闪
         let animationId = null;
-        function animateMouseEffects() {
-            // 第二页时暂停动画
-            if (currentPage !== 0) {
-                animationId = requestAnimationFrame(animateMouseEffects);
-                return;
-            }
-            
-            currentMouseX += (mouseX - currentMouseX) * 0.08;
-            currentMouseY += (mouseY - currentMouseY) * 0.08;
-            currentHueShift += (targetHueShift - currentHueShift) * 0.05;
-            
-            updateParallax();
-            updateHueFilter();
-            
-            animationId = requestAnimationFrame(animateMouseEffects);
+        let lastFrameTime = 0;
+        const frameInterval = 1000 / 30;
+        
+        function animateMouseEffects(timestamp) {
+            // 暂时关闭动画，测试是否是动画导致频闪
+            // animationId = requestAnimationFrame(animateMouseEffects);
+            return;
         }
         
         // 鼠标移动监听
